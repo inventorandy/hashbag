@@ -25,7 +25,7 @@ import (
 )
 
 func main() {
-	str := hashbag.RandomString(charset.LowercaseAlpha, charset.UppercaseAlpha, charset.Numeric)
+	str := hashbag.RandomString(32, charset.LowercaseAlpha, charset.UppercaseAlpha, charset.Numeric)
 	fmt.Println("Random String:", str)
 }
 ```
@@ -43,10 +43,12 @@ import (
 )
 
 func main() {
-	salt := hashbag.RandomString(charset.LowercaseAlpha, charset.UppercaseAlpha, charset.Numeric, charset.Special)
+	salt := hashbag.RandomString(32, charset.LowercaseAlpha, charset.UppercaseAlpha, charset.Numeric, charset.Special)
 	password := "myPassword123"
 	hashedPassword := hashbag.SHA256HashString(password, salt)
 
-	fmt.Printf("Password: %s Salt: %s Hashed Password: %s", password, salt, hashedPassword)
+	fmt.Println("Password:", password)
+	fmt.Println("Salt    :", salt)
+	fmt.Println("Hashed  :", hashedPassword)
 }
 ```
