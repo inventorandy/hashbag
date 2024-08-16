@@ -6,6 +6,7 @@ import (
 	"crypto/sha512"
 	"fmt"
 	"hash"
+	"time"
 
 	"github.com/inventorandy/hashbag/charset"
 
@@ -46,6 +47,8 @@ func hashString(h hash.Hash, s ...string) string {
 //	RandomString(10, charset.LowercaseAlpha, charset.Numeric) // "a1b2c3d4e5"
 //	RandomString(10, charset.LowercaseAlpha, charset.UppercaseAlpha) // "aBcDeFgHiJ"
 func RandomString(length int, charset ...charset.Charset) string {
+	// Generate a new random seed
+	rand.Seed(uint64(time.Now().UnixNano()))
 	chars := getCharset(charset)
 	b := make([]byte, length)
 	for i := range b {
