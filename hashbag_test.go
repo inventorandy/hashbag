@@ -11,7 +11,10 @@ func TestRandomString_Length(t *testing.T) {
 	length := 10
 	expectedLength := length
 
-	result := RandomString(length)
+	result, err := RandomString(length)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
 
 	if len(result) != expectedLength {
 		t.Errorf("Expected length %d, but got %d", expectedLength, len(result))
@@ -22,7 +25,10 @@ func TestRandomString_Charsets(t *testing.T) {
 	length := 10
 	expectedLength := length
 
-	result := RandomString(length, charset.LowercaseAlpha)
+	result, err := RandomString(length, charset.LowercaseAlpha)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
 
 	if len(result) != expectedLength {
 		t.Errorf("Expected length %d, but got %d", expectedLength, len(result))
@@ -37,7 +43,10 @@ func TestRandomString_Charsets(t *testing.T) {
 		t.Errorf("Expected only lowercase alpha characters, but got %s", result)
 	}
 
-	result = RandomString(length, charset.UppercaseAlpha)
+	result, err = RandomString(length, charset.UppercaseAlpha)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
 
 	if len(result) != expectedLength {
 		t.Errorf("Expected length %d, but got %d", expectedLength, len(result))
@@ -52,7 +61,10 @@ func TestRandomString_Charsets(t *testing.T) {
 		t.Errorf("Expected only uppercase alpha characters, but got %s", result)
 	}
 
-	result = RandomString(length, charset.Numeric)
+	result, err = RandomString(length, charset.Numeric)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
 
 	if len(result) != expectedLength {
 		t.Errorf("Expected length %d, but got %d", expectedLength, len(result))
@@ -67,7 +79,10 @@ func TestRandomString_Charsets(t *testing.T) {
 		t.Errorf("Expected only numeric characters, but got %s", result)
 	}
 
-	result = RandomString(length, charset.Special)
+	result, err = RandomString(length, charset.Special)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
 
 	if len(result) != expectedLength {
 		t.Errorf("Expected length %d, but got %d", expectedLength, len(result))
@@ -87,7 +102,11 @@ func TestSHA256HashString_Length(t *testing.T) {
 	length := 10
 	expectedLength := 64
 
-	result := SHA256HashString(RandomString(length))
+	randStr, err := RandomString(length)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+	result := SHA256HashString(randStr)
 
 	if len(result) != expectedLength {
 		t.Errorf("Expected length %d, but got %d", expectedLength, len(result))
@@ -98,7 +117,11 @@ func TestSHA512HashString_Length(t *testing.T) {
 	length := 10
 	expectedLength := 128
 
-	result := SHA512HashString(RandomString(length))
+	randStr, err := RandomString(length)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+	result := SHA512HashString(randStr)
 
 	if len(result) != expectedLength {
 		t.Errorf("Expected length %d, but got %d", expectedLength, len(result))

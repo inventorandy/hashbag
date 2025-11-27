@@ -6,11 +6,10 @@ import (
 	"crypto/sha512"
 	"fmt"
 	"hash"
-	"time"
+
+	crand "crypto/rand"
 
 	"github.com/inventorandy/hashbag/charset"
-
-	"golang.org/x/exp/rand"
 )
 
 func getCharset(cs []charset.Charset) string {
@@ -46,15 +45,20 @@ func hashString(h hash.Hash, s ...string) string {
 //	RandomString(10) // "aBcD3eFgH1"
 //	RandomString(10, charset.LowercaseAlpha, charset.Numeric) // "a1b2c3d4e5"
 //	RandomString(10, charset.LowercaseAlpha, charset.UppercaseAlpha) // "aBcDeFgHiJ"
-func RandomString(length int, charset ...charset.Charset) string {
-	// Generate a new random seed
-	rand.Seed(uint64(time.Now().UnixNano()))
+func RandomString(length int, charset ...charset.Charset) (string, error) {
 	chars := getCharset(charset)
-	b := make([]byte, length)
-	for i := range b {
-		b[i] = chars[rand.Intn(len(chars))]
+	if len(chars) == 0 {
+		return "", fmt.Errorf("empty charset")
 	}
-	return string(b)
+	b := make([]byte, length)
+	buf := make([]byte, length)
+	if _, err := crand.Read(buf); err != nil {
+		return "", err
+	}
+	for i := range b {
+		b[i] = chars[int(buf[i])%len(chars)]
+	}
+	return string(b), nil
 }
 
 // MD5HashString generates a SHA256 hash of the given string(s).

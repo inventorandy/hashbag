@@ -25,7 +25,10 @@ import (
 )
 
 func main() {
-	str := hashbag.RandomString(32, charset.LowercaseAlpha, charset.UppercaseAlpha, charset.Numeric)
+	str, err := hashbag.RandomString(32, charset.LowercaseAlpha, charset.UppercaseAlpha, charset.Numeric)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println("Random String:", str)
 }
 ```
