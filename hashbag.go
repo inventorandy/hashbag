@@ -1,9 +1,11 @@
 package hashbag
 
 import (
+	"crypto/hmac"
 	"crypto/md5"
 	"crypto/sha256"
 	"crypto/sha512"
+	"encoding/hex"
 	"fmt"
 	"hash"
 
@@ -77,4 +79,22 @@ func SHA512HashString(s ...string) string {
 // and returns the hash as a string.
 func MD5HashString(s ...string) string {
 	return hashString(md5.New(), s...)
+}
+
+// HMACSHA256HashString generates a HMAC-SHA256 hash of the
+// given string(s) using the given key and returns the hash
+// as a string.
+func HMACSHA256HashString(key []byte, value string) string {
+	mac := hmac.New(sha256.New, key)
+	mac.Write([]byte(value))
+	return hex.EncodeToString(mac.Sum(nil))
+}
+
+// HMACSHA512HashString generates a HMAC-SHA512 hash of the
+// given string(s) using the given key and returns the hash
+// as a string.
+func HMACSHA512HashString(key []byte, value string) string {
+	mac := hmac.New(sha512.New, key)
+	mac.Write([]byte(value))
+	return hex.EncodeToString(mac.Sum(nil))
 }
